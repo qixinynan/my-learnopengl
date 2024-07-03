@@ -1,0 +1,17 @@
+# ninja log v5
+3	152	1720018311407290644	01/CMakeFiles/Learn01.dir/__/deps/glad/src/glad.c.o	81832ee4d454a446
+9	1372	1720020953057292579	01/CMakeFiles/Learn01.dir/main.cpp.o	9de1824a089e5df2
+2	1359	1720018312604382348	01/CMakeFiles/Learn01.dir/logger.cpp.o	b94a42dc496cf306
+9	1687	1720021201932251906	01/CMakeFiles/Learn01.dir/shader.cpp.o	22b60aabc830bf57
+9	121	1720021425851796136	01/Learn01	aa683d7cb08ad045
+8	25	0	01/CMakeFiles/copy_shaders	b162824978f8d92f
+8	25	0	/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders	b162824978f8d92f
+25	111	1720021580027971557	01/Learn01	2f35187af134298e
+8	25	0	01/CMakeFiles/copy_shaders	b162824978f8d92f
+8	25	0	/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders	b162824978f8d92f
+9	30	0	01/CMakeFiles/copy_shaders	b162824978f8d92f
+9	30	0	/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders	b162824978f8d92f
+8	29	0	01/CMakeFiles/copy_shaders	b162824978f8d92f
+8	29	0	/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders	b162824978f8d92f
+22	39	0	01/CMakeFiles/copy_shaders	b162824978f8d92f
+22	39	0	/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders	b162824978f8d92f

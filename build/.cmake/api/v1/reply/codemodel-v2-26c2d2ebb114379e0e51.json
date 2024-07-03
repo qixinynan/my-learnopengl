@@ -1,0 +1,85 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1.2"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "01",
+					"jsonFile" : "directory-01-Debug-c2a9d23fbba2efec603b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1.2"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "01",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "MyLearnOpenGL",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "Learn01::@b6636575af0a6514c0ef",
+					"jsonFile" : "target-Learn01-Debug-96b82137e33b3784aedc.json",
+					"name" : "Learn01",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "copy_shaders::@b6636575af0a6514c0ef",
+					"jsonFile" : "target-copy_shaders-Debug-d42aeac05fa43e29b13c.json",
+					"name" : "copy_shaders",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/qixiny/repos/my-learnopengl/build",
+		"source" : "/Users/qixiny/repos/my-learnopengl"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
