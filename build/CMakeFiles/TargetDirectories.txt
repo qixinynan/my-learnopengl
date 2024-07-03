@@ -1,6 +1,0 @@
-/Users/qixiny/repos/my-learnopengl/build/CMakeFiles/edit_cache.dir
-/Users/qixiny/repos/my-learnopengl/build/CMakeFiles/rebuild_cache.dir
-/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/Learn01.dir
-/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/copy_shaders.dir
-/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/edit_cache.dir
-/Users/qixiny/repos/my-learnopengl/build/01/CMakeFiles/rebuild_cache.dir
