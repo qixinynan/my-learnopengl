@@ -176,8 +176,8 @@ int main() {
     projection =
         glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-    shader.SetMatrix4("view", glm::value_ptr(view));
-    shader.SetMatrix4("projection", glm::value_ptr(projection));
+    shader.SetMat4("view", view);
+    shader.SetMat4("projection", projection);
 
     for (uint i = 0; i < 10; i++) {
       glm::mat4 local = glm::mat4(1.0f);
@@ -185,7 +185,7 @@ int main() {
       float angle = 20.0 * i;
       local =
           glm::rotate(local, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-      shader.SetMatrix4("local", glm::value_ptr(local));
+      shader.SetMat4("local", local);
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
