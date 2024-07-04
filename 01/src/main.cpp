@@ -120,7 +120,7 @@ int main() {
   GLFWwindow *window = nullptr;
   InitWindow(&window, 800, 600, "Hello OpenGL");
 
-  Shader shader("shaders/basic.vert", "shaders/basic.frag");
+  Shader shader("resources/shaders/basic.vert", "resources/shaders/basic.frag");
   if (shader.Compile() != 0) {
     LOG_CRITICAL("Failed to compile shaders");
     return -1;
