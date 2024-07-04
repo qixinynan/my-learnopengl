@@ -1,5 +1,6 @@
 find_package(glfw3 REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(glm REQUIRED)
 
 include_directories(../deps/glad/include)
 include_directories(../deps/stb/)
@@ -13,7 +14,7 @@ add_executable(Learn01
     ../deps/stb/stb_image.cpp
   )
 
-target_link_libraries(Learn01 glfw spdlog::spdlog)
+target_link_libraries(Learn01 glfw spdlog::spdlog glm::glm)
 
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/01/shaders)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/01/resources)

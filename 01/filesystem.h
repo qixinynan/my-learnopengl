@@ -14,7 +14,6 @@ public:
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0) {
       char *dir = dirname(path);
-      LOG_INFO("executable path is {}\n", dir);
       return std::filesystem::path(dir);
     } else {
       LOG_CRITICAL("buffer too small; need size %u\n", size);
