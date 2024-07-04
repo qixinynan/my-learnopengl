@@ -5,6 +5,7 @@
 #include "logger.h"
 #include "shader.h"
 #include "stb_image.h"
+#include "texture.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -115,29 +116,6 @@ void ProcessInput(GLFWwindow *window) {
 
 void Terminate() { glfwTerminate(); }
 
-void LoadTexture(uint &texture, const char *path, GLint mode = GL_RGB) {
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  int width, height, nr_channels;
-  stbi_set_flip_vertically_on_load(true);
-  uchar *data = stbi_load(FileSystem::GetPath(path).c_str(), &width, &height,
-                          &nr_channels, 0);
-  if (data) {
-    glTexImage2D(GL_TEXTURE_2D, 0, mode, width, height, 0, mode,
-                 GL_UNSIGNED_BYTE, data);
-  } else {
-    LOG_CRITICAL("Failed to load texture");
-  }
-  stbi_image_free(data);
-}
-
 int main() {
   GLFWwindow *window = nullptr;
   InitWindow(&window, 800, 600, "Hello OpenGL");
@@ -204,9 +182,9 @@ int main() {
   // ---   RENDER END    ---
 
   // Load textures
-  uint texture1, texture2;
-  LoadTexture(texture1, "resources/textures/container.jpg", GL_RGB);
-  LoadTexture(texture2, "resources/textures/awesomeface.png", GL_RGBA);
+  // uint texture1, texture2;
+  Texture texture1("resources/textures/container.jpg");
+  Texture texture2("resources/textures/awesomeface.png", GL_RGBA);
 
   shader.Use();
   shader.SetInt("texture1", 0);
@@ -226,10 +204,8 @@ int main() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    texture1.Bind(GL_TEXTURE0);
+    texture2.Bind(GL_TEXTURE1);
 
     shader.Use();
 

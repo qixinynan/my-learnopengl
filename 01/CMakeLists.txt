@@ -10,6 +10,7 @@ add_executable(Learn01
     ./main.cpp
     ./shader.cpp
     ./camera.cpp
+    ./texture.cpp
     ../deps/glad/include/glad/glad.h
     ../deps/glad/src/glad.c
     ../deps/stb/stb_image.cpp
