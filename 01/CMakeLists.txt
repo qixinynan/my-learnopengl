@@ -9,6 +9,7 @@ include_directories(${glfw_INCLUDE_DIRS})
 add_executable(Learn01
     ./main.cpp
     ./shader.cpp
+    ./camera.cpp
     ../deps/glad/include/glad/glad.h
     ../deps/glad/src/glad.c
     ../deps/stb/stb_image.cpp

@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 // GLFW must be included after glad
+#include "camera.h"
 #include "filesystem.h"
 #include "logger.h"
 #include "shader.h"
@@ -12,8 +13,52 @@
 
 const bool kLineMode = false;
 
+struct Postion {
+  float x;
+  float y;
+};
+
+Camera camera;          // TODO
+float deltaTime = 0.0f; // 当前帧与上一帧的时间差
+float lastFrame = 0.0f; // 上一帧的时间
+
+bool first_mouse = true;
+
+Postion last_cursor = {.x = 400, .y = 300};
+float fov = 45.0f;
+
 void FrameBufferSizeCallback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
+}
+
+void MouseCallBack(GLFWwindow *window, double xpos, double ypos) {
+
+  if (first_mouse) // 这个bool变量初始时是设定为true的
+  {
+
+    last_cursor.x = xpos;
+    last_cursor.y = ypos;
+    first_mouse = false;
+  }
+
+  float xoffset = xpos - last_cursor.x;
+  float yoffset = last_cursor.y - ypos;
+  last_cursor.x = xpos;
+  last_cursor.y = ypos;
+  float sensitivity = 0.05f;
+  xoffset *= sensitivity;
+  yoffset *= sensitivity;
+  camera.Rotate(xoffset, yoffset);
+}
+
+void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+  if (fov >= 1.0f && fov <= 45.0f)
+    fov -= yoffset;
+  if (fov <= 1.0f)
+    fov = 1.0f;
+  if (fov >= 45.0f)
+    fov = 45.0f;
+  std::cout << fov << std::endl;
 }
 
 int InitWindow(GLFWwindow **window, int width, int height, const char *title) {
@@ -43,13 +88,29 @@ int InitWindow(GLFWwindow **window, int width, int height, const char *title) {
   glViewport(0, 0, width, height);
   glfwSetFramebufferSizeCallback(*window, FrameBufferSizeCallback);
   glEnable(GL_DEPTH_TEST);
+  glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  glfwSetCursorPosCallback(*window, MouseCallBack);
+  glfwSetScrollCallback(*window, ScrollCallback);
   return 0;
 }
 
 void ProcessInput(GLFWwindow *window) {
+  float camera_speed = 2.5f * deltaTime;
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
   }
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    camera.MoveForward(camera_speed);
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    camera.MoveForward(-camera_speed);
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    camera.MoveRight(-camera_speed);
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    camera.MoveRight(camera_speed);
+  if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    camera.MoveUp(-camera_speed);
+  if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    camera.MoveUp(camera_speed);
 }
 
 void Terminate() { glfwTerminate(); }
@@ -156,6 +217,10 @@ int main() {
 
   // Main Loop
   while (!glfwWindowShouldClose(window)) {
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
     ProcessInput(window);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -167,18 +232,16 @@ int main() {
     glBindTexture(GL_TEXTURE_2D, texture2);
 
     shader.Use();
-    glBindVertexArray(VAO);
-
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
     glm::mat4 projection = glm::mat4(1.0f);
     projection =
-        glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-    shader.SetMat4("view", view);
+        glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
     shader.SetMat4("projection", projection);
 
+    glm::mat4 view = camera.GetViewMatrix();
+    shader.SetMat4("view", view);
+
+    glBindVertexArray(VAO);
     for (uint i = 0; i < 10; i++) {
       glm::mat4 local = glm::mat4(1.0f);
       local = glm::translate(local, cube_pos_list[i]);
