@@ -53,7 +53,7 @@ int ShaderStatus(OpenGLShader shader) {
   return 0;
 }
 
-void Shader::Compile() {
+int Shader::Compile() {
   OpenGLShader vertex = glCreateShader(GL_VERTEX_SHADER);
 
   const char *vertex_code = vertex_source_.c_str();
@@ -79,10 +79,12 @@ void Shader::Compile() {
     glGetProgramInfoLog(program_, 512, nullptr, info);
 
     LOG_CRITICAL("Failed to link shader program: {}", info);
+    return -1;
   }
 
   glDeleteShader(vertex);
   glDeleteShader(fragment);
+  return 0;
 }
 
 void Shader::Use() { glUseProgram(program_); }
@@ -95,4 +97,11 @@ void Shader::SetInt(const std::string &name, int value) const {
 }
 void Shader::SetFloat(const std::string &name, float value) const {
   glUniform1f(glGetUniformLocation(program_, name.c_str()), value);
+}
+void Shader::SetMatrix4(const std::string &name, float *value) const {
+  unsigned int location = glGetUniformLocation(program_, name.c_str());
+  if (location == -1) {
+    LOG_ERROR("Uniform called \"{}\" could not be found", name.c_str());
+  }
+  glUniformMatrix4fv(location, 1, GL_FALSE, value);
 }
