@@ -1,5 +1,5 @@
-#ifndef APP_H
-#define APP_H
+#ifndef FILESYSTEM_H
+#define FILESYSTEM_H
 
 #include "logger.h"
 #include <filesystem>
@@ -7,9 +7,9 @@
 #include <mach-o/dyld.h>
 #include <string>
 
-class App {
+class FileSystem {
 public:
-  static std::filesystem::path ApplicationDirectory() {
+  static std::filesystem::path RootDirectory() {
     char path[1024];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0) {
@@ -21,5 +21,10 @@ public:
       return "";
     }
   }
+
+  static std::filesystem::path GetPath(const char *file) {
+    return RootDirectory() / file;
+  }
 };
+
 #endif

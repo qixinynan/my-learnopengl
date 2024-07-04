@@ -11,6 +11,7 @@ public:
 
   void Compile();
   void Use();
+  OpenGLShaderProgram GetId() { return program_; };
 
   void SetBool(const std::string &name, bool value) const;
   void SetInt(const std::string &name, int value) const;

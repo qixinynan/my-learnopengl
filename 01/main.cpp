@@ -1,12 +1,13 @@
 #include <glad/glad.h>
 // GLFW must be included after glad
-#include "app.h"
+#include "filesystem.h"
 #include "logger.h"
 #include "shader.h"
+#include "stb_image.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-const bool kLineMode = true;
+const bool kLineMode = false;
 
 void FrameBufferSizeCallback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -47,27 +48,30 @@ void ProcessInput(GLFWwindow *window) {
   }
 }
 
-void MainLoop(GLFWwindow *window, Shader shader, unsigned int VAO) {
-  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  while (!glfwWindowShouldClose(window)) {
-    ProcessInput(window);
-
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    shader.Use();
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    // Swap buffers and poll IO events
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-  }
-}
-
 void Terminate() { glfwTerminate(); }
+
+void LoadTexture(uint &texture, const char *path, GLint mode = GL_RGB) {
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  int width, height, nr_channels;
+  stbi_set_flip_vertically_on_load(true);
+  uchar *data = stbi_load(FileSystem::GetPath(path).c_str(), &width, &height,
+                          &nr_channels, 0);
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, mode, width, height, 0, mode,
+                 GL_UNSIGNED_BYTE, data);
+  } else {
+    LOG_CRITICAL("Failed to load texture");
+  }
+  stbi_image_free(data);
+}
 
 int main() {
   GLFWwindow *window = nullptr;
@@ -77,16 +81,14 @@ int main() {
   shader.Compile();
 
   float vertices[] = {
-      0.5f,  0.5f,  0.0f, // 右上角
-      0.5f,  -0.5f, 0.0f, // 右下角
-      -0.5f, -0.5f, 0.0f, // 左下角
-      -0.5f, 0.5f,  0.0f  // 左上角
+      // positions          // colors           // texture coords
+      0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+      0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+      -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f  // top left
   };
 
-  unsigned int indices[] = {
-      0, 1, 3, // 第一个三角形
-      1, 2, 3  // 第二个三角形
-  };
+  uint indices[] = {0, 1, 3, 1, 2, 3};
 
   // ---   RENDER START  ---
   unsigned int VBO, VAO, EBO;
@@ -102,18 +104,56 @@ int main() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
+  // color attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  // texture coord attribute
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
 
   // Unbind the VBO & VAO
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
   // ---   RENDER END    ---
 
+  // Load textures
+  uint texture1, texture2;
+  LoadTexture(texture1, "resources/textures/container.jpg", GL_RGB);
+  LoadTexture(texture2, "resources/textures/awesomeface.png", GL_RGBA);
+
+  shader.Use();
+  glUniform1i(glGetUniformLocation(shader.GetId(), "texture1"), 0);
+  shader.SetInt("texture2", 1);
+
   if (kLineMode)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-  MainLoop(window, shader, VAO);
+  // Main Loop
+  while (!glfwWindowShouldClose(window)) {
+    ProcessInput(window);
+
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+
+    shader.Use();
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    // Swap buffers and poll IO events
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
+  // End Main Loop
 
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VAO);

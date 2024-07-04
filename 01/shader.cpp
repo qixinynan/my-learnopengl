@@ -1,5 +1,5 @@
 #include "shader.h"
-#include "app.h"
+#include "filesystem.h"
 #include "logger.h"
 #include "types.h"
 #include <filesystem>
@@ -12,11 +12,9 @@ Shader::Shader(const char *vertex_path, const char *fragment_path) {
   vertex_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
   fragment_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-  std::filesystem::path basedir = App::ApplicationDirectory();
-
   try {
-    vertex_file.open(basedir / vertex_path);
-    fragment_file.open(basedir / fragment_path);
+    vertex_file.open(FileSystem::GetPath(vertex_path));
+    fragment_file.open(FileSystem::GetPath(fragment_path));
     std::stringstream vertex_stream, fragment_stream;
 
     vertex_stream << vertex_file.rdbuf();
