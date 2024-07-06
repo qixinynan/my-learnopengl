@@ -5,7 +5,8 @@
 #include "texture.h"
 #include <GLFW/glfw3.h>
 
-Texture::Texture(const char *path, GLint mode) {
+void Texture::LoadTexture(const char *path, GLint mode) {
+  enable = true;
   glGenTextures(1, &texture_);
   glBindTexture(GL_TEXTURE_2D, texture_);
 
@@ -29,6 +30,8 @@ Texture::Texture(const char *path, GLint mode) {
 }
 
 void Texture::Bind(GLenum texture_id) {
-  glActiveTexture(texture_id);
-  glBindTexture(GL_TEXTURE_2D, texture_);
+  if (enable) {
+    glActiveTexture(texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_);
+  }
 }

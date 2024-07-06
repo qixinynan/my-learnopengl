@@ -9,6 +9,9 @@ include_directories(include)
 
 add_executable(Learn01
     ./src/main.cpp
+    ./src/application.cpp
+    ./src/gameobject.cpp
+    ./src/game.cpp
     ./src/shader.cpp
     ./src/camera.cpp
     ./src/texture.cpp

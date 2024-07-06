@@ -1,5 +1,11 @@
 #include "camera.h"
 
+Camera *Camera::main_camera_ = nullptr;
+
+Camera *Camera::MainCamera() { return main_camera_; }
+
+void Camera::SetMainCamera(Camera *main_camera) { main_camera_ = main_camera; }
+
 glm::mat4 Camera::GetViewMatrix() {
   return glm::lookAt(position_, position_ + front_, up_);
 }

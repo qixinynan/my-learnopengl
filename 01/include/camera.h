@@ -10,8 +10,12 @@ public:
   Camera(glm::vec3 postion = glm::vec3(0.0f, 0.0f, 0.0f),
          glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f))
       : position_(postion), up_(up), front_(glm::vec3(0.0f, 0.0f, -1.0f)),
-        yaw_(-90.0f), pitch_(0.0f) {}
+        yaw_(-90.0f), pitch_(0.0f){};
   glm::mat4 GetViewMatrix();
+  float fov = 45.0f;
+
+  static Camera *MainCamera();
+  static void SetMainCamera(Camera *main_camera);
 
   void MoveForward(float delta);
   void MoveRight(float delta);
@@ -19,11 +23,11 @@ public:
   void Rotate(float xoffset, float yoffset);
 
 private:
+  static Camera *main_camera_;
   glm::vec3 position_;
   glm::vec3 front_;
   glm::vec3 up_;
   float yaw_;
   float pitch_;
 };
-
 #endif
