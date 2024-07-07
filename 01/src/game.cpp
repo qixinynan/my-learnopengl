@@ -11,7 +11,13 @@ void Game::SetRenderFunction(std::function<void()> func) {
   render_func_ = func;
 }
 
-void Game::AddGameObject(GameObject *obj) { gameobjects.push_back(obj); }
+void Game::AddGameObject(GameObject *obj, GameObjectType type) {
+  if (type == kScreenObject) {
+    scrren_objects.push_back(obj);
+  } else {
+    gameobjects.push_back(obj);
+  }
+}
 
 void Game::ProcessInput(GLFWwindow *window) {
   float camera_speed = 0.1f;
@@ -46,7 +52,13 @@ void Game::Run() {
                                   0.1f, 100.0f);
     view = Camera::MainCamera()->GetViewMatrix();
 
+    glEnable(GL_DEPTH_TEST);
     for (GameObject *obj : gameobjects) {
+      obj->Render();
+    }
+
+    glDisable(GL_DEPTH_TEST);
+    for (GameObject *obj : scrren_objects) {
       obj->Render();
     }
   }

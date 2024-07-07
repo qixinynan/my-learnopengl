@@ -17,7 +17,7 @@ public:
 
   Game();
   void SetRenderFunction(std::function<void()> func);
-  void AddGameObject(GameObject *obj);
+  void AddGameObject(GameObject *obj, GameObjectType type = kSpaceObject);
   void ProcessInput(GLFWwindow *window);
   void Run();
 
@@ -25,5 +25,6 @@ private:
   bool debug_ = false;
   std::function<void()> render_func_ = []() {};
   std::vector<GameObject *> gameobjects = {};
+  std::vector<GameObject *> scrren_objects = {};
 };
 #endif

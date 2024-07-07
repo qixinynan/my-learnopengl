@@ -12,6 +12,7 @@ public:
   };
   void LoadTexture(const char *texture_path, GLint mode = GL_RGB);
   void Bind(GLenum texture_id);
+  uint GetTextureId() { return texture_; }
 
 private:
   bool enable = false;

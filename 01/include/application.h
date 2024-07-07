@@ -11,6 +11,7 @@ public:
   static Application *Instance();
   int CreateWindow();
   int CloseWindow();
+  void DebugMode(bool debug);
   void BindGame(Game *game);
   Game *GetGame();
   GLFWwindow *window = nullptr;
@@ -25,6 +26,7 @@ private:
   Postion last_cursor_ = {.x = 400, .y = 300};
   float lastframe_ = 0.0f;
   bool first_mouse_ = true;
+  bool debug_mode_ = false;
 
   static void ScrollCallback(GLFWwindow *window, double xoffset,
                              double yoffset);

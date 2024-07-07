@@ -16,6 +16,8 @@ Game *Application::GetGame() { return game_; }
 
 Application *Application::Instance() { return instance_; }
 
+void Application::DebugMode(bool debug) { this->debug_mode_ = debug; }
+
 int Application::CreateWindow() {
   if (!glfwInit()) {
     LOG_CRITICAL("Failed to initialize GLFW");
@@ -40,10 +42,18 @@ int Application::CreateWindow() {
   }
   glViewport(0, 0, width, height);
   glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   glfwSetCursorPosCallback(window, MouseCallBack);
   glfwSetScrollCallback(window, ScrollCallback);
+  if (debug_mode_)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   LOG_INFO("Window has been created");
   return 0;
 }
