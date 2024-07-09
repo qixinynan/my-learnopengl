@@ -6,9 +6,8 @@ out vec2 TexCoords;
 uniform mat4 local;
 uniform mat4 projection;
 uniform mat4 view;
-uniform float depth;
 
 void main() {
   TexCoords = vertex.zw;
-  gl_Position = projection * view * local * vec4(vertex.xy, depth, 1.0);
+  gl_Position = projection * view * local * vec4(vertex.xy, 0.0, 1.0);
 }

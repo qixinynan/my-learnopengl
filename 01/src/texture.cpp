@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 //
 #include "filesystem.h"
+#include "logger.h"
 #include "stb_image.h"
 #include "texture.h"
 #include <GLFW/glfw3.h>
@@ -13,11 +14,11 @@ void Texture::LoadTexture(const char *path, GLint mode) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  int width, height, nr_channels;
-  stbi_set_flip_vertically_on_load(true);
+  int nr_channels;
+  // stbi_set_flip_vertically_on_load(true);
   uchar *data = stbi_load(FileSystem::GetPath(path).c_str(), &width, &height,
                           &nr_channels, 0);
   if (data) {
@@ -34,4 +35,12 @@ void Texture::Bind(GLenum texture_id) {
     glActiveTexture(texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_);
   }
+}
+
+void Texture::SetSliceCount(float x, float y) {
+  slice_count = Vector<float, 2>(x, y);
+}
+
+void Texture::SetSlicePosition(float x, float y) {
+  slice_position = Vector<float, 2>(x, y);
 }
