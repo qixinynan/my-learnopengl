@@ -50,7 +50,7 @@ public:
 
     glm::mat4 view = glm::mat4(1.0f);
     if (!gui_mode) {
-      view = Application::Instance()->GetGame()->view;
+      view = GetGame()->MainCamera()->GetViewMatrix();
     }
 
     shader_.Use();
@@ -58,7 +58,7 @@ public:
     shader_.SetMat4("local", local);
 
     shader_.SetMat4("projection",
-                    Application::Instance()->GetGame()->projection_ortho);
+                    GetGame()->MainCamera()->GetProjectionMatrix());
     shader_.SetMat4("view", view);
   }
 

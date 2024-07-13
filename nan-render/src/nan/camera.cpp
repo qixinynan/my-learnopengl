@@ -1,13 +1,18 @@
 #include "nan/camera.h"
+#include "nan/application.h"
 
-Camera *Camera::main_camera_ = nullptr;
+void Camera::Update() {
+  float screen_ratio = ((float)Application::Instance()->width) /
+                       ((float)Application::Instance()->height);
+  view_ = glm::lookAt(position_, position_ + front_, up_);
 
-Camera *Camera::MainCamera() { return main_camera_; }
-
-void Camera::SetMainCamera(Camera *main_camera) { main_camera_ = main_camera; }
-
-glm::mat4 Camera::GetViewMatrix() {
-  return glm::lookAt(position_, position_ + front_, up_);
+  if (type_ == kOrtho) {
+    projection_ = glm::ortho(0.0f, screen_ratio * ortho_size, ortho_size, 0.0f,
+                             -1.0f, 100.0f);
+  } else {
+    projection_ =
+        glm::perspective(glm::radians(45.0f), screen_ratio, 0.1f, 100.0f);
+  }
 }
 
 void Camera::MoveForward(float delta) { position_ += delta * front_; }

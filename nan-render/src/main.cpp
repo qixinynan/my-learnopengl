@@ -66,8 +66,9 @@ int main() {
   tiles.Init();
   game.AddGameObject(&tiles, kScreenObject);
 
-  Camera camera(glm::vec3(0, 0, 0));
-  Camera::SetMainCamera(&camera);
+  Camera camera(Camera::kPerspective, glm::vec3(0, 0, 0));
+  game.AddCamera(&camera);
+  game.SetMainCamera(&camera);
 
   game.Run();
   app.CloseWindow();

@@ -21,7 +21,6 @@ void GameObject::GenerateVAO() {
 
   glBindVertexArray(VAO_);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  LOG_INFO("sizeof {}", sizeof(vertices));
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float),
                vertices.data(), GL_STATIC_DRAW);
 }
@@ -100,9 +99,8 @@ void GameObject::UpdateUniforms() {
   local = glm::rotate(local, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
 
   shader_.SetMat4("local", local);
-  shader_.SetMat4("projection",
-                  Application::Instance()->GetGame()->projection_perspective);
-  shader_.SetMat4("view", Application::Instance()->GetGame()->view);
+  shader_.SetMat4("projection", GetGame()->MainCamera()->GetProjectionMatrix());
+  shader_.SetMat4("view", GetGame()->MainCamera()->GetViewMatrix());
 }
 
 void GameObject::RenderObject() {

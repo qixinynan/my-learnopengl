@@ -26,4 +26,7 @@ private:
   bool debug_mode_ = false;
 };
 
+inline Game *GetGame() { return Application::Instance()->GetGame(); }
+inline Application *GetApplication() { return Application::Instance(); }
+
 #endif
