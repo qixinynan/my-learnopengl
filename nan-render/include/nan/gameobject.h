@@ -1,8 +1,8 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
-#include "shader.h"
-#include "texture.h"
-#include "types.h"
+#include "nan/shader.h"
+#include "nan/texture.h"
+#include "nan/types.h"
 #include <vector>
 
 class GameObject {

@@ -1,9 +1,9 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "game.h"
-#include "gameobject.h"
-#include "types.h"
+#include "nan/game.h"
+#include "nan/gameobject.h"
+#include "nan/types.h"
 
 class Cube : public GameObject {
 public:

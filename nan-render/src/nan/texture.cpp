@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 //
-#include "filesystem.h"
-#include "logger.h"
+#include "nan/filesystem.h"
+#include "nan/logger.h"
+#include "nan/texture.h"
 #include "stb_image.h"
-#include "texture.h"
 #include <GLFW/glfw3.h>
 
 void Texture::LoadTexture(const char *path, GLint mode) {

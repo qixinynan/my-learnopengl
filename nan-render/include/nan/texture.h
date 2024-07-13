@@ -1,8 +1,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "types.h"
-#include "vector.h"
+#include "nan/types.h"
+#include "nan/vector.h"
 #include <glad/glad.h>
 
 class Texture {

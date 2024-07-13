@@ -1,7 +1,7 @@
 #ifndef FILESYSTEM_H
 #define FILESYSTEM_H
 
-#include "logger.h"
+#include "nan/logger.h"
 #include <filesystem>
 #include <libgen.h> // 用于 dirname 函数
 #include <mach-o/dyld.h>

@@ -1,7 +1,7 @@
-#include "gameobject.h"
-#include "application.h"
-#include "game.h"
-#include "logger.h"
+#include "nan/gameobject.h"
+#include "nan/application.h"
+#include "nan/game.h"
+#include "nan/logger.h"
 #include <iostream>
 
 void GameObject::SetTexture(uint id, Texture texture) {
@@ -100,7 +100,8 @@ void GameObject::UpdateUniforms() {
   local = glm::rotate(local, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
 
   shader_.SetMat4("local", local);
-  shader_.SetMat4("projection", Application::Instance()->GetGame()->projection);
+  shader_.SetMat4("projection",
+                  Application::Instance()->GetGame()->projection_perspective);
   shader_.SetMat4("view", Application::Instance()->GetGame()->view);
 }
 

@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "nan/camera.h"
 
 Camera *Camera::main_camera_ = nullptr;
 

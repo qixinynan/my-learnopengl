@@ -1,12 +1,12 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "application.h"
-#include "game.h"
-#include "gameobject.h"
-#include "logger.h"
-#include "shader.h"
-#include "types.h"
+#include "nan/application.h"
+#include "nan/game.h"
+#include "nan/gameobject.h"
+#include "nan/logger.h"
+#include "nan/shader.h"
+#include "nan/types.h"
 #include <iostream>
 
 class Sprite : public GameObject {
@@ -56,8 +56,9 @@ public:
     shader_.Use();
     shader_.SetMat4("texMat", texmat);
     shader_.SetMat4("local", local);
+
     shader_.SetMat4("projection",
-                    glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f));
+                    Application::Instance()->GetGame()->projection_ortho);
     shader_.SetMat4("view", view);
   }
 

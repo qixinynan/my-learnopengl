@@ -1,7 +1,7 @@
-#include "shader.h"
-#include "filesystem.h"
-#include "logger.h"
-#include "types.h"
+#include "nan/shader.h"
+#include "nan/filesystem.h"
+#include "nan/logger.h"
+#include "nan/types.h"
 #include <filesystem>
 #include <fstream>
 
