@@ -21,6 +21,7 @@ public:
   void AddCamera(Camera *camera);
   Camera *MainCamera();
   void SetMainCamera(Camera *main_camera);
+  std::vector<Camera *> GetCameras();
 
   void ProcessInput();
   void Run();
@@ -28,8 +29,10 @@ public:
 private:
   // TODO: Event manager
   bool running_ = false;
+  bool editor_mode_ = true;
   SDL_Event event_;
   Camera *main_camera_;
+  int target_fps_ = 60;
 
   std::function<void()> render_func_ = []() {};
   std::vector<GameObject *> gameobjects_ = {};

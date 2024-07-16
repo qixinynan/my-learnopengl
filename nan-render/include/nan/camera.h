@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string>
 
 class Camera {
 public:
@@ -17,6 +18,7 @@ public:
 
   const float fov = 45.0f;
   const float ortho_size = 5.0f;
+  std::string name = "Unnamed Camera";
 
   void Update();
   glm::mat4 GetViewMatrix() { return view_; }

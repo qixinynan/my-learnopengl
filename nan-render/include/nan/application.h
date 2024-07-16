@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 #include "SDL2/SDL.h"
+#include "nan/editor/editor.h"
 #include "nan/game.h"
 #include <glad/glad.h>
 
@@ -13,7 +14,10 @@ public:
   void DebugMode(bool debug);
   void BindGame(Game *game);
   Game *GetGame();
+
   SDL_Window *window = nullptr;
+  Editor *editor = nullptr;
+
   float width;
   float height;
 

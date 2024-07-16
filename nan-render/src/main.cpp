@@ -67,9 +67,15 @@ int main() {
   game.AddGameObject(&tiles, kScreenObject);
 
   Camera camera(Camera::kPerspective, glm::vec3(0, 0, 0));
-  game.AddCamera(&camera);
-  game.SetMainCamera(&camera);
+  camera.name = "Perspective Camera";
 
+  Camera camera2(Camera::kOrtho, glm::vec3(0, 0, 0));
+  camera2.name = "Ortho Camera";
+
+  game.AddCamera(&camera);
+  game.AddCamera(&camera2);
+
+  game.SetMainCamera(&camera);
   game.Run();
   app.CloseWindow();
   return 0;

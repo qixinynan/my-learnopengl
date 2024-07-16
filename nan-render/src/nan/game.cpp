@@ -8,7 +8,10 @@
 #include <SDL_keycode.h>
 #include <SDL_scancode.h>
 #include <SDL_stdinc.h>
+#include <SDL_timer.h>
 #include <SDL_video.h>
+
+// TODO: Instance ID
 
 Application *app = nullptr;
 
@@ -28,20 +31,36 @@ void Game::AddGameObject(GameObject *obj, GameObjectType type) {
 
 void Game::ProcessInput() {
   while (SDL_PollEvent(&event_)) {
+    GetApplication()->editor->ProcessInput(&event_);
     switch (event_.type) {
     case SDL_QUIT:
       running_ = false;
       break;
+    case SDL_WINDOWEVENT:
+      if (event_.window.event == SDL_WINDOWEVENT_RESIZED) {
+        int width = event_.window.data1;
+        int height = event_.window.data2;
+        GetApplication()->width = width;
+        GetApplication()->height = height;
+        glViewport(0, 0, width, height);
+      }
+      break;
     case SDL_KEYUP:
       if (event_.key.keysym.sym == SDLK_ESCAPE) {
         running_ = false;
+      } else if (event_.key.keysym.sym == SDLK_LALT ||
+                 event_.key.keysym.sym == SDLK_RALT) {
+        editor_mode_ = !editor_mode_;
       }
       break;
     case SDL_MOUSEMOTION:
-      ProcessMouse();
+      if (!editor_mode_)
+        ProcessMouse();
     }
   }
-  ProcessKeyboard();
+  if (!editor_mode_) {
+    ProcessKeyboard();
+  }
 }
 
 void Game::ProcessKeyboard() {
@@ -75,14 +94,25 @@ void Game::ProcessMouse() {
 
 void Game::Run() {
   running_ = true;
+  float frame_start;
+  const float frame_delay = 1000.0f / target_fps_;
+
   while (running_) {
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    frame_start = SDL_GetTicks();
+
+    if (editor_mode_) {
+      SDL_SetRelativeMouseMode(SDL_FALSE);
+    } else {
+      SDL_SetRelativeMouseMode(SDL_TRUE);
+    }
     SDL_GL_SwapWindow(app->window);
     ProcessInput();
 
     for (Camera *camera : cameras_) {
       camera->Update();
     }
+
+    GetApplication()->editor->NewFrame();
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -97,11 +127,21 @@ void Game::Run() {
     for (GameObject *obj : scrren_objects_) {
       obj->Render();
     }
+
+    if (editor_mode_)
+      GetApplication()->editor->Draw();
+
+    deltatime = SDL_GetTicks() - frame_start;
+    if (frame_delay > deltatime) {
+      SDL_Delay(frame_delay - deltatime);
+    }
   }
   app->CloseWindow();
 }
 
 void Game::AddCamera(Camera *camera) { cameras_.push_back(camera); }
+
+std::vector<Camera *> Game::GetCameras() { return cameras_; }
 
 Camera *Game::MainCamera() { return main_camera_; }
 

@@ -20,9 +20,9 @@ int Application::CreateWindow() {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-  window =
-      SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                       width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  window = SDL_CreateWindow(
+      title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
+      SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   if (window == nullptr) {
     LOG_CRITICAL("Failed to create window: {}", SDL_GetError());
     CloseWindow();
@@ -40,18 +40,17 @@ int Application::CreateWindow() {
     return -1;
   }
   glViewport(0, 0, width, height);
-  // glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
-  // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  // glfwSetCursorPosCallback(window, MouseCallBack);
-  // glfwSetScrollCallback(window, ScrollCallback);
   if (debug_mode_)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+  editor = new Editor(window, context_);
+  editor->Init();
 
   LOG_INFO("Window has been created");
   return 0;

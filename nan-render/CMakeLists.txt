@@ -4,12 +4,13 @@ set(NAN_BINARY_DIR ${CMAKE_BINARY_DIR}/nan-render)
 
 find_package(spdlog REQUIRED)
 find_package(glm REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(SDL2 REQUIRED)
 
 include_directories(include)
 include_directories(../deps/glad/include)
 include_directories(../deps/stb/)
+
+
 add_executable(${TARGET}
   ../deps/glad/src/glad.c
   ../deps/stb/stb_image.cpp
@@ -20,9 +21,11 @@ add_executable(${TARGET}
   src/nan/gameobject.cpp
   src/nan/shader.cpp
   src/nan/texture.cpp
+  src/nan/editor/editor.cpp
+  src/nan/editor/maineditor.cpp
 )
 
-target_link_libraries(${TARGET} ${SDL2_LIBRARIES} spdlog::spdlog glm::glm GLEW::GLEW) 
+target_link_libraries(${TARGET} ${SDL2_LIBRARIES} imgui spdlog::spdlog glm::glm) 
 
 file(MAKE_DIRECTORY ${NAN_BINARY_DIR}/resources)
 
