@@ -9,14 +9,15 @@ void MainEditor::ShowWindow() {
 
   ImGui::Begin("Main Editor");
   if (ImGui::CollapsingHeader("Camera")) {
-    static int selected_camera = -1;
+    static int selected_camera = GetGame()->MainCamera()->InstanceId();
     if (ImGui::TreeNode("Playing Camera")) {
       std::vector<Camera *> cameras = GetGame()->GetCameras();
       for (int i = 0; i < cameras.size(); i++) {
         auto item = cameras[i];
         // LOG_INFO("Camera!: {}", item->name);
-        if (ImGui::Selectable(item->name.c_str(), selected_camera == i)) {
-          selected_camera = i;
+        if (ImGui::Selectable(item->name.c_str(),
+                              selected_camera == item->InstanceId())) {
+          selected_camera = item->InstanceId();
           GetGame()->SetMainCamera(item);
         }
       }

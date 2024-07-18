@@ -13,6 +13,7 @@ public:
   int CloseWindow();
   void DebugMode(bool debug);
   void BindGame(Game *game);
+  int FetchInstanceId();
   Game *GetGame();
 
   SDL_Window *window = nullptr;
@@ -28,6 +29,7 @@ private:
   SDL_GLContext context_;
   float lastframe_ = 0.0f;
   bool debug_mode_ = false;
+  int instance_id_index_ = 0;
 };
 
 inline Game *GetGame() { return Application::Instance()->GetGame(); }

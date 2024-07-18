@@ -1,11 +1,12 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
+#include "nan/object.h"
 #include "nan/shader.h"
 #include "nan/texture.h"
 #include "nan/types.h"
 #include <vector>
 
-class GameObject {
+class GameObject : public nanrender::Object {
 public:
   glm::vec3 postion = glm::vec3(0.0f);
   glm::vec3 size = glm::vec3(1.0f);

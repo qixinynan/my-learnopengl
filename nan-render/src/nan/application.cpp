@@ -63,6 +63,11 @@ int Application::CloseWindow() {
   return 0;
 }
 
+int Application::FetchInstanceId() {
+  instance_id_index_++;
+  return instance_id_index_;
+}
+
 void Application::BindGame(Game *game) { this->game_ = game; }
 
 Game *Application::GetGame() { return game_; }

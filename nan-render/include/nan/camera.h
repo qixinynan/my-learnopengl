@@ -1,12 +1,13 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "nan/object.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 
-class Camera {
+class Camera : public nanrender::Object {
 public:
   enum ProjectionType { kPerspective, kOrtho };
 
