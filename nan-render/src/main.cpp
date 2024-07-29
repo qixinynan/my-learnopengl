@@ -3,10 +3,11 @@
 #include "nan/filesystem.h"
 #include "nan/gameobject.h"
 #include "nan/gameobject/cube.h"
-#include "nan/gameobject/sprite.h"
+#include "nan/gameobject/graphic.h"
 #include "nan/logger.h"
 #include "nan/position.h"
 #include "nan/shader.h"
+#include "nan/sprite.h"
 #include "nan/texture.h"
 #include "stb_image.h"
 #include <GLFW/glfw3.h>
@@ -56,12 +57,19 @@ int main() {
   // ui2.Init();
   // game.AddGameObject(&ui2, kScreenObject);
   Texture tile_texture("resources/textures/tileset.png", GL_RGBA);
-  tile_texture.SetSliceCount(21, 15);
-  tile_texture.SetSlicePosition(10, 0);
-  Sprite tiles;
+  // tile_texture.SetSliceCount(21, 15);
+  // tile_texture.SetSlicePosition(1, 0);
+  // Sprite sprite(tile_texture);
+  // sprite.SetSlicePosition(21, 15);
+  // sprite.SetSlicePosition(1, 0);
+  Sprite s(tile_texture);
+  s.SetSliceCount(21, 15);
+  s.SetSlicePosition(1, 0);
+
+  Graphic tiles;
   tiles.name = "Tilemap";
   tiles.postion = glm::vec3(0.0f, 0.0f, 0.0f);
-  tiles.SetTexture(tile_texture);
+  tiles.SetSprite(s);
   tiles.size = glm::vec3(1, 1, 0.0f);
   tiles.Init();
   game.AddGameObject(&tiles, kScreenObject);

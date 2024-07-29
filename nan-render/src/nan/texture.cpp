@@ -36,11 +36,3 @@ void Texture::Bind(GLenum texture_id) {
     glBindTexture(GL_TEXTURE_2D, texture_);
   }
 }
-
-void Texture::SetSliceCount(float x, float y) {
-  slice_count = Vector<float, 2>(x, y);
-}
-
-void Texture::SetSlicePosition(float x, float y) {
-  slice_position = Vector<float, 2>(x, y);
-}

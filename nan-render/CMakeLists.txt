@@ -21,6 +21,7 @@ add_executable(${TARGET}
   src/nan/gameobject.cpp
   src/nan/shader.cpp
   src/nan/texture.cpp
+  src/nan/sprite.cpp
   src/nan/object.cpp
   src/nan/editor/editor.cpp
   src/nan/editor/maineditor.cpp
